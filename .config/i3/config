@@ -215,4 +215,4 @@ exec_always --no-startup-id feh --bg-fill ~/.config/wallpaper.jpg
 bindsym $mod+minus move scratchpad
 bindsym $mod+plus scratchpad show
 bindsym --release Print exec --no-startup-id ~/.scripts/screenshot.sh "-window root"
-bindsym --release Shift+Print exec ~/.scripts/screenshot.sh
+bindsym --release Shift+Print exec --no-startup-id ~/.scripts/screenshot.sh

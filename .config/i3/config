@@ -60,6 +60,8 @@ bindsym $mod+space focus mode_toggle
 
 bindsym $mod+a focus parent
 
+bindsym Print exec sh -c 'scrot $(date -Iminutes).png'
+
 set $ws1 "1"
 set $ws2 "2"
 set $ws3 "3"
@@ -115,6 +117,12 @@ mode "resize" {
         bindsym Up resize shrink height 10 px or 10 ppt
         bindsym Right resize grow width 10 px or 10 ppt
 
+        bindsym 1 resize set width 1280 px; exec notify-send 1280 -t 200 -c res
+        bindsym 2 resize set width 1366 px; exec notify-send 1366 -t 200 -c res
+        bindsym 3 resize set width 1600 px; exec notify-send 1600 -t 200 -c res
+        bindsym 4 resize set width 1920 px; exec notify-send 1920 -t 200 -c res
+        bindsym 5 resize set width 2160 px; exec notify-send 2160 -t 200 -c res
+
         # back to normal: Enter or Escape or $mod+r
         bindsym Return mode "default"
         bindsym Escape mode "default"
@@ -122,6 +130,19 @@ mode "resize" {
 }
 
 bindsym $mod+r mode "resize"
+
+mode "layout" {
+        bindsym 1 exec --no-startup-id setxkbmap br; exec notify-send br -t 200 -c res
+        bindsym 2 exec --no-startup-id setxkbmap ru; exec notify-send ru -t 200 -c res
+        bindsym 3 exec --no-startup-id setxkbmap -layout cz -variant qwerty; exec notify-send zh -t 200 -c res
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+
+
+bindsym $mod+F1 mode "layout"
 
 bindsym $mod+minus move scratchpad
 bindsym $mod+plus scratchpad show
@@ -164,5 +185,9 @@ client.focused_inactive $base02 $base02 $base03 $base01
 client.unfocused $base01 $base01 $base03 $base01
 client.urgent $base02 $base08 $base07 $base08
 
-exec setxkbmap br
-exec /home/yuri/.scripts/start_jack.sh
+exec --no-startup-id setxkbmap br
+exec --no-startup-id dunst
+exec --no-startup-id parcellite
+exec --no-startup-id $HOME/.scripts/start_jack.sh
+exec_always --no-startup-id feh --bg-fill $HOME/.config/wallpaper.jpg
+

@@ -21,6 +21,15 @@ set nowrap
 :nnoremap <A-k> <C-w>k
 :nnoremap <A-l> <C-w>l
 
+:inoremap <A-o> <C-\><C-N>:tabp<CR>
+:inoremap <A-p> <C-\><C-N>:tabn<CR>
+:tnoremap <A-o> <C-\><C-N>:tabp<CR>
+:tnoremap <A-p> <C-\><C-N>:tabn<CR>
+:nnoremap <A-o> :tabp<CR>
+:nnoremap <A-p> :tabn<CR>
+
+:tnoremap
+
 call plug#begin()
 Plug 'preservim/nerdtree'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }

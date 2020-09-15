@@ -164,7 +164,7 @@ set $base0E #955ae7
 set $base0F #bf40bf
 
 bar {
-    status_command    i3status
+    status_command    i3blocks
     position          top
     workspace_buttons yes
 

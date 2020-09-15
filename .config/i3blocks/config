@@ -1,0 +1,24 @@
+[gpu_temp]
+command=sensors amdgpu-pci-0100 | grep edge | awk '{print "GPU " $2}'
+interval=5
+
+[cpu_temp]
+command=sensors it8728-isa-0228 | grep temp2 | awk '{print "CPU " $2}'
+interval=5
+
+[ip]
+command=hostname -i | awk '{ print "IP:" $1 }'
+color=#91E78B
+interval=10
+
+[cpu_usage]
+command=mpstat | grep all | awk '{ print $3}'
+interval=1
+
+[mem_usage]
+command=free -h | grep Mem. | awk '{print $3"/"$2}'
+interval=1
+
+[time]
+command=date "+%y-%m-%d %T"
+interval=5

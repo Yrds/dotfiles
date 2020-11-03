@@ -28,7 +28,6 @@ set nowrap
 :nnoremap <A-o> :tabp<CR>
 :nnoremap <A-p> :tabn<CR>
 
-:tnoremap
 
 call plug#begin()
 Plug 'preservim/nerdtree'

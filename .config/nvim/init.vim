@@ -5,8 +5,9 @@ set laststatus=2
 set tabstop=2
 set shiftwidth=2
 set expandtab
-set number
+set nu rnu
 set nowrap
+set so=999
 
 :tnoremap <A-h> <C-\><C-N><C-w>h
 :tnoremap <A-j> <C-\><C-N><C-w>j
@@ -28,12 +29,11 @@ set nowrap
 :nnoremap <A-o> :tabp<CR>
 :nnoremap <A-p> :tabn<CR>
 
-:tnoremap
-
 call plug#begin()
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'preservim/nerdtree'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'jonsmithers/vim-html-template-literals'
 Plug 'vuciv/vim-bujo'
 Plug 'pangloss/vim-javascript'
@@ -44,6 +44,8 @@ Plug 'peitalin/vim-jsx-typescript'
 Plug 'SirVer/ultisnips'
 Plug 'styled-components/vim-styled-components', {'branch': 'main'}
 Plug 'quabug/vim-gdscript'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'dart-lang/dart-vim-plugin'
 call plug#end()
 
 map <C-l> :NERDTreeToggle<CR>
@@ -58,5 +60,8 @@ nmap <A-t> :Todo<CR>
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:NERDTreeWinSize=50
 
 set omnifunc=syntaxcomplete#Complete
+
+let g:deoplete#enable_at_startup = 1

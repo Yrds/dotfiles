@@ -61,6 +61,7 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
 
 bindsym Print exec sh -c 'scrot $(date -Iminutes).png'
+bindsym --release Shift+Print exec sh -c 'scrot -s $(date -Iminutes).png'
 
 set $ws1 "1"
 set $ws2 "2"
@@ -131,7 +132,7 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-mode "layout" {
+mode "keyboard layout" {
         bindsym 1 exec --no-startup-id setxkbmap br; exec notify-send br -t 200 -c res
         bindsym 2 exec --no-startup-id setxkbmap ru; exec notify-send ru -t 200 -c res
         bindsym 3 exec --no-startup-id setxkbmap -layout cz -variant qwerty; exec notify-send zh -t 200 -c res
@@ -142,10 +143,11 @@ mode "layout" {
 }
 
 
-bindsym $mod+F1 mode "layout"
+bindsym $mod+F1 mode "keyboard layout"
 
 bindsym $mod+minus move scratchpad
 bindsym $mod+plus scratchpad show
+bindsym $mod+p sticky toggle
 set $base00 #19171c
 set $base01 #26232a
 set $base02 #585260
@@ -188,6 +190,5 @@ client.urgent $base02 $base08 $base07 $base08
 exec --no-startup-id setxkbmap br
 exec --no-startup-id dunst
 exec --no-startup-id parcellite
-exec --no-startup-id $HOME/.scripts/start_jack.sh
 exec_always --no-startup-id feh --bg-fill $HOME/.config/wallpaper.jpg
 

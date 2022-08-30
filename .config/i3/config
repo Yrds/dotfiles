@@ -2,25 +2,20 @@ set $mod Mod4
 
 font pango:monospace 8
 
-for_window [class=".*"] border pixel 2
+for_window [class=".*"] border pixel 5
 
 font xft:"Source Code Pro" "Regular" 12
 
-gaps inner 10
+gaps inner 5
 set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 floating_modifier $mod
 
+for_window [all] title_window_icon on
+
 bindsym $mod+Return exec alacritty
 
-bindsym $mod+d exec rofi -show run -modi run -location 1 -width 100 \
-		 -lines 2 -line-margin 0 -line-padding 1 \
-		 -separator-style none -font "mono 10" -columns 9 -bw 0 \
-		 -kb-row-select "Tab" -kb-row-tab ""
+bindsym $mod+d exec rofi -show drun -modi run
 
 bindsym $mod+Shift+q kill
 
@@ -59,9 +54,13 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 
 bindsym $mod+a focus parent
+bindsym $mod+c focus child
 
-bindsym Print exec sh -c 'scrot $(date -Iminutes).png'
-bindsym --release Shift+Print exec sh -c 'scrot -s $(date -Iminutes).png'
+bindsym Print exec sh -c 'maim $HOME/Screenshots/$(date -Iseconds).png'
+bindsym --release Shift+Print exec sh -c 'maim -s $HOME/Screenshots/$(date -Iseconds).png'
+
+bindsym Ctrl+Print exec sh -c 'maim | xclip -selection clipboard -t image/png'
+bindsym --release Ctrl+Shift+Print exec sh -c 'maim -s | xclip -selection clipboard -t image/png'
 
 set $ws1 "1"
 set $ws2 "2"
@@ -120,9 +119,10 @@ mode "resize" {
 
         bindsym 1 resize set width 1280 px; exec notify-send 1280 -t 200 -c res
         bindsym 2 resize set width 1366 px; exec notify-send 1366 -t 200 -c res
-        bindsym 3 resize set width 1600 px; exec notify-send 1600 -t 200 -c res
-        bindsym 4 resize set width 1920 px; exec notify-send 1920 -t 200 -c res
-        bindsym 5 resize set width 2160 px; exec notify-send 2160 -t 200 -c res
+        bindsym 3 resize set width 1440 px; exec notify-send 1440 -t 200 -c res
+        bindsym 4 resize set width 1600 px; exec notify-send 1600 -t 200 -c res
+        bindsym 5 resize set width 1920 px; exec notify-send 1920 -t 200 -c res
+        bindsym 6 resize set width 2560 px; exec notify-send 2560 -t 200 -c res
 
         # back to normal: Enter or Escape or $mod+r
         bindsym Return mode "default"
@@ -135,7 +135,7 @@ bindsym $mod+r mode "resize"
 mode "keyboard layout" {
         bindsym 1 exec --no-startup-id setxkbmap br; exec notify-send br -t 200 -c res
         bindsym 2 exec --no-startup-id setxkbmap ru; exec notify-send ru -t 200 -c res
-        bindsym 3 exec --no-startup-id setxkbmap -layout cz -variant qwerty; exec notify-send zh -t 200 -c res
+        bindsym 3 exec --no-startup-id setxkbmap -layout zh -variant qwerty; exec notify-send zh -t 200 -c res
 
         bindsym Return mode "default"
         bindsym Escape mode "default"
@@ -165,30 +165,41 @@ set $base0D #576ddb
 set $base0E #955ae7
 set $base0F #bf40bf
 
-bar {
-    status_command    i3blocks
-    position          top
-    workspace_buttons yes
+# class                 border  bground text    indicator child_border
+client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
+client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
+client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
+client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
+client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
 
-    font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
-    colors {
-        separator $base03
-            background $base01
-            statusline $base05
-            focused_workspace $base0C $base0D $base00
-            active_workspace $base02 $base02 $base07
-            inactive_workspace $base01 $base01 $base03
-            urgent_workspace $base08 $base08 $base07
-    }
+client.background       #F8F8F2
+
+bar {
+
+  status_command    i3blocks
+  position          top
+  workspace_buttons yes
+  separator_symbol ":|:"
+
+
+  font xft:"Source Code Pro" "Regular" 10
+
+  colors {
+    background #282A36
+    statusline #F8F8F2
+    separator  #44475A
+
+    focused_workspace  #44475A #44475A #F8F8F2
+    active_workspace   #282A36 #44475A #F8F8F2
+    inactive_workspace #282A36 #282A36 #BFBFBF
+    urgent_workspace   #FF5555 #FF5555 #F8F8F2
+    binding_mode       #FF5555 #FF5555 #F8F8F2
+  }
 }
 
-client.focused $base0D $base0D $base00 $base01
-client.focused_inactive $base02 $base02 $base03 $base01
-client.unfocused $base01 $base01 $base03 $base01
-client.urgent $base02 $base08 $base07 $base08
 
 exec --no-startup-id setxkbmap br
 exec --no-startup-id dunst
-exec --no-startup-id parcellite
+exec --no-startup-id xrdb ~/.Xresources
 exec_always --no-startup-id feh --bg-fill $HOME/.config/wallpaper.jpg
 

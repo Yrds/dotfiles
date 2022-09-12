@@ -13,7 +13,7 @@ floating_modifier $mod
 
 for_window [all] title_window_icon on
 
-bindsym $mod+Return exec alacritty
+bindsym $mod+Return exec kitty
 
 bindsym $mod+d exec rofi -show drun -modi run
 

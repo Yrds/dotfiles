@@ -5,7 +5,7 @@ set laststatus=2
 set tabstop=2
 set shiftwidth=2
 set expandtab
-set nu rnu
+set nu
 set nowrap
 set so=999
 
@@ -13,27 +13,45 @@ set so=999
 :tnoremap <A-j> <C-\><C-N><C-w>j
 :tnoremap <A-k> <C-\><C-N><C-w>k
 :tnoremap <A-l> <C-\><C-N><C-w>l
+
 :inoremap <A-h> <C-\><C-N><C-w>h
 :inoremap <A-j> <C-\><C-N><C-w>j
 :inoremap <A-k> <C-\><C-N><C-w>k
 :inoremap <A-l> <C-\><C-N><C-w>l
+
 :nnoremap <A-h> <C-w>h
 :nnoremap <A-j> <C-w>j
 :nnoremap <A-k> <C-w>k
 :nnoremap <A-l> <C-w>l
 
-:inoremap <A-o> <C-\><C-N>:tabp<CR>
-:inoremap <A-p> <C-\><C-N>:tabn<CR>
-:tnoremap <A-o> <C-\><C-N>:tabp<CR>
-:tnoremap <A-p> <C-\><C-N>:tabn<CR>
-:nnoremap <A-o> :tabp<CR>
-:nnoremap <A-p> :tabn<CR>
+:noremap <C-l> :Files<CR>
+:noremap <C-k> :GFiles<CR>
+:noremap <C-j> :Rg<CR>
+:noremap <C-n> :Windows<CR>
+
+:noremap <S-L> :e #<CR>
+
+
+let b:ale_linters = {
+      \  'javascript': ['eslint']
+      \}
+
+
+"let g:deoplete#enable_at_startup = 1
+let g:ale_completion_enabled = 1
 
 call plug#begin()
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'preservim/nerdtree'
-Plug 'junegunn/fzf.vim'
+Plug 'preservim/vim-lexical'
+Plug 'leafOfTree/vim-vue-plugin'
+Plug '2072/PHP-Indenting-for-VIm'
+Plug 'kana/vim-operator-user'
+Plug 'dracula/vim', { 'as': 'dracula' }
+Plug '2072/PHP-Indenting-for-VIm'
+Plug 'bfrg/vim-cpp-modern'
+Plug 'tpope/vim-fugitive'
+Plug 'kyazdani42/nvim-web-devicons' " for file icons
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'jonsmithers/vim-html-template-literals'
 Plug 'vuciv/vim-bujo'
 Plug 'pangloss/vim-javascript'
@@ -46,9 +64,25 @@ Plug 'styled-components/vim-styled-components', {'branch': 'main'}
 Plug 'quabug/vim-gdscript'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'dart-lang/dart-vim-plugin'
+Plug 'dense-analysis/ale'
+Plug 'sbdchd/neoformat'
 call plug#end()
 
-map <C-l> :NERDTreeToggle<CR>
+
+augroup lexical
+  autocmd!
+  autocmd FileType markdown,mkd call lexical#init()
+  autocmd FileType textile call lexical#init()
+  autocmd FileType text call lexical#init({ 'spell': 0 })
+augroup END
+
+let g:neoformat_try_formatprg = 1
+autocmd FileType cpp setlocal equalprg='clang-format'
+
+let g:lexical#spell = 1   
+let g:lexical#spelllang = ['en_us','pt_br']
+set termguicolors " this variable must be enabled for colors to be applied properly
+colorscheme dracula
 
 nmap <A-CR> <Plug>BujoAddnormal
 imap <A-CR> <Plug>BujoAddinsert
@@ -60,8 +94,9 @@ nmap <A-t> :Todo<CR>
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-let g:NERDTreeWinSize=50
 
-set omnifunc=syntaxcomplete#Complete
+"let g:ale_linters_explicit = 1
 
-let g:deoplete#enable_at_startup = 1
+
+
+set omnifunc=ale#completion#OmniFunc

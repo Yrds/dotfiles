@@ -127,3 +127,6 @@ alias nvm='unalias nvm && load_nvm && nvm'
 source /etc/profile
 
 
+export PATH="$HOME/.android/cmdline-tools/bin/:$PATH"
+
+alias ssh="TERM=xterm ssh"

@@ -1,5 +1,40 @@
+[site_status]
+command=/home/yuri/.scripts/website_monitor.sh
+interval=60
+markup=pango
+
+[pst_time]
+command=echo PST: $(bash -c 'TZ="America/Los_Angeles" date "+%T"')
+interval=5
+
+[utc_time]
+command=echo UTC: $(date "+%T" -u)
+interval=5
+
+[ada_binance]
+command=/home/yuri/.scripts/binance.sh ADABUSD
+interval=30
+markup=pango
+
+[bttc_binance]
+command=/home/yuri/.scripts/binance.sh BTTCUSDT
+#command=/home/yuri/.scripts/binance.sh | jq '.lastPrice, .priceChangePercent | tonumber' | tr '\n' ' | ' | awk '{print "ADA: " $1 "<span foreground="red">" $2 "</span> %"}'
+interval=30
+markup=pango
+
+[btc_binance]
+command=/home/yuri/.scripts/binance.sh BTCUSDT
+#command=/home/yuri/.scripts/binance.sh | jq '.lastPrice, .priceChangePercent | tonumber' | tr '\n' ' | ' | awk '{print "ADA: " $1 "<span foreground="red">" $2 "</span> %"}'
+interval=30
+markup=pango
+
+[trx_binance]
+command=/home/yuri/.scripts/binance.sh TRXUSDT
+interval=30
+markup=pango
+
 [gpu_temp]
-command=sensors amdgpu-pci-0100 | grep edge | awk '{print "GPU " $2}'
+command=sensors amdgpu-pci-0400 | grep edge | awk '{print "GPU " $2}'
 interval=5
 
 [cpu_temp]
@@ -12,13 +47,18 @@ color=#91E78B
 interval=10
 
 [cpu_usage]
-command=mpstat | grep all | awk '{ print $3}'
-interval=1
+command=vmstat 1 2| tail -1 | awk '{print 100-$15}'
+interval=2
 
 [mem_usage]
 command=free -h | grep Mem. | awk '{print $3"/"$2}'
 interval=1
 
+[swap_usage]
+command=free -h | grep Swap | awk '{print $3"/"$2}'
+interval=1
+
 [time]
 command=date "+%y-%m-%d %T"
 interval=5
+

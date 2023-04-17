@@ -33,14 +33,18 @@ set so=999
 
 
 let b:ale_linters = {
-      \  'javascript': ['eslint']
+      \  'javascript': ['eslint'],
+      \  'html': ['angular', 'eslint'],
       \}
+
 
 
 "let g:deoplete#enable_at_startup = 1
 let g:ale_completion_enabled = 1
+let g:ale_c_build_dir_names = ['build', 'bin', 'build/debug', 'build/prod']
 
 call plug#begin()
+Plug 'rhysd/vim-grammarous'
 Plug 'preservim/vim-lexical'
 Plug 'leafOfTree/vim-vue-plugin'
 Plug '2072/PHP-Indenting-for-VIm'
@@ -68,6 +72,19 @@ Plug 'dense-analysis/ale'
 Plug 'sbdchd/neoformat'
 call plug#end()
 
+
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-l> <plug>(fzf-complete-line)
+
+function! AutoSaveSession()
+  if !empty(expand(glob("Session.vim")))
+    echo "Saving"
+    mksession! Session.vim
+  endif
+endfunction
+
+au VimLeave * :call AutoSaveSession()
 
 augroup lexical
   autocmd!

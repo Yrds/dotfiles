@@ -130,3 +130,6 @@ source /etc/profile
 export PATH="$HOME/.android/cmdline-tools/bin/:$PATH"
 
 alias ssh="TERM=xterm ssh"
+export TERM=xterm-256color
+
+source /usr/share/fzf/key-bindings.zsh

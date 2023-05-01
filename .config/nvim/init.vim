@@ -39,6 +39,7 @@ let b:ale_linters = {
 
 "let g:deoplete#enable_at_startup = 1
 let g:ale_completion_enabled = 1
+let g:ale_c_build_dir_names = ['build', 'build/debug', 'build/prod']
 
 call plug#begin()
 Plug 'preservim/vim-lexical'

@@ -19,6 +19,11 @@ interval=1
 command=free -h | grep Mem. | awk '{print $3"/"$2}'
 interval=1
 
+[battery]
+command=upower -i /org/freedesktop/UPower/devices/battery_BAT0 | awk '/percentage/ {print $2}'
+interval=5
+
 [time]
 command=date "+%y-%m-%d %T"
 interval=5
+

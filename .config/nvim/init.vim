@@ -70,6 +70,7 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'dart-lang/dart-vim-plugin'
 Plug 'dense-analysis/ale'
 Plug 'sbdchd/neoformat'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 call plug#end()
 
 
@@ -78,7 +79,7 @@ imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-l> <plug>(fzf-complete-line)
 
 function! AutoSaveSession()
-  if !empty(expand(glob("Session.vim")))
+  if !empty(expand(glob("Session.vim")) && exists(v:this_session))
     echo "Saving"
     mksession! Session.vim
   endif

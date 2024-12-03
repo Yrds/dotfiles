@@ -1,24 +1,34 @@
 set $mod Mod4
 
-font pango:monospace 8
+font pango:Miracode 12
 
-for_window [class=".*"] border pixel 5
+for_window [all] border pixel 5
+for_window [floating] border pixel 5
 
-font xft:"Source Code Pro" "Regular" 12
+#font xft:Miracode:style=Regular 12
 
-gaps inner 5
+gaps inner 10
 set $refresh_i3status killall -SIGUSR1 i3status
 
 floating_modifier $mod
 
 for_window [all] title_window_icon on
+for_window [all] title_format "<b>%title</b>"
+title_align center
+
 
 bindsym $mod+Return exec kitty
 
-bindsym $mod+d exec rofi -show drun -modi run
+bindsym $mod+d exec rofi -show drun -modi run -show-icons
+#bindsym $mod+o exec rofi -show drun -modi run -show-icons
+
+bindsym $mod+F9 exec $HOME/.scripts/smg_click.sh
+bindsym $mod+F10 exec cat /tmp/smg_click.pid | xargs kill
 
 bindsym $mod+Shift+q kill
 
+bindsym $mod+Shift+b bar mode dock
+bindsym $mod+Shift+v bar mode invisible
 
 bindsym $mod+h focus left
 bindsym $mod+j focus down
@@ -51,6 +61,8 @@ bindsym $mod+e layout toggle split
 
 bindsym $mod+Shift+space floating toggle
 
+bindsym $mod+Shift+t move position 0 0
+
 bindsym $mod+space focus mode_toggle
 
 bindsym $mod+a focus parent
@@ -62,16 +74,16 @@ bindsym --release Shift+Print exec sh -c 'maim -s $HOME/Screenshots/$(date -Isec
 bindsym Ctrl+Print exec sh -c 'maim | xclip -selection clipboard -t image/png'
 bindsym --release Ctrl+Shift+Print exec sh -c 'maim -s | xclip -selection clipboard -t image/png'
 
-set $ws1 "1"
-set $ws2 "2"
-set $ws3 "3"
-set $ws4 "4"
-set $ws5 "5"
-set $ws6 "6"
-set $ws7 "7"
-set $ws8 "8"
-set $ws9 "9"
-set $ws10 "10"
+set $ws1 "1:<b>1</b>"
+set $ws2 "2:<b>2</b>"
+set $ws3 "3:<b>3</b>"
+set $ws4 "4:<b>4</b>"
+set $ws5 "5:<b>5</b>"
+set $ws6 "6:<b>6</b>"
+set $ws7 "7:<b>7</b>"
+set $ws8 "8:<b>8</b>"
+set $ws9 "9:<b>9</b>"
+set $ws10 "10:<b>10</b>"
 
 bindsym $mod+1 workspace number $ws1
 bindsym $mod+2 workspace number $ws2
@@ -136,6 +148,7 @@ mode "keyboard layout" {
         bindsym 1 exec --no-startup-id setxkbmap br; exec notify-send br -t 200 -c res
         bindsym 2 exec --no-startup-id setxkbmap ru; exec notify-send ru -t 200 -c res
         bindsym 3 exec --no-startup-id setxkbmap -layout zh -variant qwerty; exec notify-send zh -t 200 -c res
+        bindsym 4 exec --no-startup-id setxkbmap us; exec notify-send en -t 200 -c res
 
         bindsym Return mode "default"
         bindsym Escape mode "default"
@@ -175,14 +188,19 @@ client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
 client.background       #F8F8F2
 
 bar {
-
   status_command    i3blocks
+  i3bar_command i3bar
+  #output HDMI-1
   position          top
+
+  strip_workspace_name no
+  strip_workspace_numbers yes
   workspace_buttons yes
+
   separator_symbol ":|:"
 
 
-  font xft:"Source Code Pro" "Regular" 10
+  font pango:Miracode 10
 
   colors {
     background #282A36
@@ -197,9 +215,10 @@ bar {
   }
 }
 
-
-exec --no-startup-id setxkbmap br
 exec --no-startup-id dunst
 exec --no-startup-id xrdb ~/.Xresources
-exec_always --no-startup-id feh --bg-fill $HOME/.config/wallpaper.jpg
+exec --no-startup-id xscreensaver --no-splash
+exec --no-startup-id ~/.scripts/disable_dpms.sh
 
+exec_always --no-startup-id feh --bg-fill $HOME/.config/wallpaper.jpg
+exec_always --no-startup-id setxkbmap br

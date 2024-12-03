@@ -1,20 +1,21 @@
 #Android
-#export ANDROID_HOME="$HOME/Android"
-
+export ANDROID_HOME="$HOME/Android/sdk"
+export ANDROID_NDK_HOME="/opt/android-ndk/"
 
 # If you come from bash you might have to change your $PATH.
 #export PATH="/home/yuri/Android/tools/bin/":$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+#export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="af-magic"
+#ZSH_THEME="fade"
 
 export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix'
+export FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -76,9 +77,9 @@ export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix'
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git aliases)
+#plugins=(git aliases)
 
-source $ZSH/oh-my-zsh.sh
+#source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
@@ -126,9 +127,21 @@ alias nvm='unalias nvm && load_nvm && nvm'
 
 source /etc/profile
 
-export PATH="$HOME/.android/cmdline-tools/bin/:$PATH"
+export PATH="$HOME/Android/sdk/cmdline-tools/latest/bin/:$PATH"
+export PATH="/opt/android-ndk/:$PATH"
+export PATH="$HOME/.scripts/:$PATH"
 
 alias ssh="TERM=xterm ssh"
+alias neofetch="neofetch --kitty ~/Sources/images/caneta_azul_pistola.png"
 export TERM=xterm-256color
 
 source /usr/share/fzf/key-bindings.zsh
+
+
+# pnpm
+export PNPM_HOME="/home/yuri/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

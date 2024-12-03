@@ -1,7 +1,25 @@
-[site_status]
-command=/home/yuri/.scripts/website_monitor.sh
+[blender_check]
+command=$HOME/.scripts/check_new_blender_lts.sh
+interval=3600
+color=#FF0000
+
+#[motds]
+#command=echo "Make It Work | Make It Beautiful | Make It Fast"
+#interval=10000
+
+[clickup_track]
+command=$HOME/Projetos/clickup-blocks/build/cu-blocks
 interval=60
 markup=pango
+
+[redmis2]
+command=ssh redmis2 termux-battery-status | jq .percentage
+interval=5
+
+#[site_status]
+#command=/home/yuri/.scripts/website_monitor.sh
+#interval=60
+#markup=pango
 
 [pst_time]
 command=echo PST: $(bash -c 'TZ="America/Los_Angeles" date "+%T"')
@@ -11,34 +29,35 @@ interval=5
 command=echo UTC: $(date "+%T" -u)
 interval=5
 
-[ada_binance]
-command=/home/yuri/.scripts/binance.sh ADABUSD
-interval=30
-markup=pango
+#[ada_binance]
+#command=/home/yuri/.scripts/binance.sh ADABUSD
+#interval=30
+#markup=pango
 
-[bttc_binance]
-command=/home/yuri/.scripts/binance.sh BTTCUSDT
-#command=/home/yuri/.scripts/binance.sh | jq '.lastPrice, .priceChangePercent | tonumber' | tr '\n' ' | ' | awk '{print "ADA: " $1 "<span foreground="red">" $2 "</span> %"}'
-interval=30
-markup=pango
+#[bttc_binance]
+#command=/home/yuri/.scripts/binance.sh BTTCUSDT
+##command=/home/yuri/.scripts/binance.sh | jq '.lastPrice, .priceChangePercent | tonumber' | tr '\n' ' | ' | awk '{print "ADA: " $1 "<span foreground="red">" $2 "</span> %"}'
+#interval=30
+#markup=pango
+#
+#[btc_binance]
+#command=/home/yuri/.scripts/binance.sh BTCUSDT
+##command=/home/yuri/.scripts/binance.sh | jq '.lastPrice, .priceChangePercent | tonumber' | tr '\n' ' | ' | awk '{print "ADA: " $1 "<span foreground="red">" $2 "</span> %"}'
+#interval=30
+#markup=pango
+#
+#[trx_binance]
+#command=/home/yuri/.scripts/binance.sh TRXUSDT
+#interval=30
+#markup=pango
+#
 
-[btc_binance]
-command=/home/yuri/.scripts/binance.sh BTCUSDT
-#command=/home/yuri/.scripts/binance.sh | jq '.lastPrice, .priceChangePercent | tonumber' | tr '\n' ' | ' | awk '{print "ADA: " $1 "<span foreground="red">" $2 "</span> %"}'
-interval=30
-markup=pango
-
-[trx_binance]
-command=/home/yuri/.scripts/binance.sh TRXUSDT
-interval=30
-markup=pango
-
-[gpu_temp]
-command=sensors amdgpu-pci-0400 | grep edge | awk '{print "GPU " $2}'
+[gpu_status]
+command=$HOME/.scripts/gpu_status.sh
 interval=5
 
 [cpu_temp]
-command=sensors it8728-isa-0228 | grep temp2 | awk '{print "CPU " $2}'
+command=sensors nct6798-isa-0290 | grep TSI0_TEMP | awk '{print "󰻠  " $2}'
 interval=5
 
 [ip]
@@ -61,4 +80,3 @@ interval=1
 [time]
 command=date "+%y-%m-%d %T"
 interval=5
-

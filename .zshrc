@@ -118,6 +118,9 @@ alias yr="yarn run"
 # Kitty
 alias icat="kitty +kitten icat"
 
+# Git
+alias gchk="git checkout"
+
 export EDITOR=nvim
 
 source ~/.zsh.d/load_nvm.sh
@@ -137,6 +140,8 @@ export TERM=xterm-256color
 
 source /usr/share/fzf/key-bindings.zsh
 
+# ESP
+#source /opt/esp-idf/export.sh
 
 # pnpm
 export PNPM_HOME="/home/yuri/.local/share/pnpm"
@@ -145,3 +150,4 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+#

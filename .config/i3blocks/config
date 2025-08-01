@@ -3,14 +3,24 @@ command=$HOME/.scripts/check_new_blender_lts.sh
 interval=3600
 color=#FF0000
 
+[song_playing]
+command=playerctl metadata --format " {{ artist }} - {{ title }}"
+interval=1
+color=#AAAAFF
+
+[recording]
+command=$HOME/.scripts/record_audio_with_mic.sh status
+interval=1
+color=#FF0000
+
 #[motds]
 #command=echo "Make It Work | Make It Beautiful | Make It Fast"
 #interval=10000
 
-[clickup_track]
-command=$HOME/Projetos/clickup-blocks/build/cu-blocks
-interval=60
-markup=pango
+#[clickup_track]
+#command=$HOME/Projetos/clickup-blocks/build/cu-blocks
+#interval=60
+#markup=pango
 
 [redmis2]
 command=ssh redmis2 termux-battery-status | jq .percentage
@@ -58,6 +68,18 @@ interval=5
 
 [cpu_temp]
 command=sensors nct6798-isa-0290 | grep TSI0_TEMP | awk '{print "󰻠  " $2}'
+interval=5
+
+[hd_storage_1]
+command=$HOME/.scripts/storage_usage.sh /home
+interval=5
+
+[hd_storage_2]
+command=$HOME/.scripts/storage_usage.sh /
+interval=5
+
+[hd_storage_2]
+command=$HOME/.scripts/storage_usage.sh /srv
 interval=5
 
 [ip]

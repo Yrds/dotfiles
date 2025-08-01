@@ -9,7 +9,7 @@ function check_root(){
 }
 
 function start_network(){
-    ip link set enp3s0 up &&
+    ip link set enp5s0 up &&
     ip address restore < /home/yuri/.config/ip/address.config &&
     ip route restore < /home/yuri/.config/ip/route.config &&
     echo "Network started"

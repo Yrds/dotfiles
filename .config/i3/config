@@ -5,6 +5,13 @@ font pango:Miracode 12
 for_window [all] border pixel 5
 for_window [floating] border pixel 5
 
+# Zoom
+for_window [class="(.*join\?action\=join.*|.*zoom.*)"] floating enable
+for_window [class="(.*join\?action\=join.*|.*zoom.*)" title="Zoom - Licensed Account"] floating disable
+for_window [class="(.*join\?action\=join.*|.*zoom.*)" title="Zoom - Free Account"] floating disable
+for_window [class="(.*join\?action\=join.*|.*zoom.*)" title="Zoom Meeting"] floating disable
+for_window [class="(.*join\?action\=join.*|.*zoom.*)" title="Zoom Webinar"] floating disable
+
 #font xft:Miracode:style=Regular 12
 
 gaps inner 10
@@ -73,6 +80,14 @@ bindsym --release Shift+Print exec sh -c 'maim -s $HOME/Screenshots/$(date -Isec
 
 bindsym Ctrl+Print exec sh -c 'maim | xclip -selection clipboard -t image/png'
 bindsym --release Ctrl+Shift+Print exec sh -c 'maim -s | xclip -selection clipboard -t image/png'
+
+bindsym --release Mod1+Sys_Req exec sh -c 'maim -s -f png | tesseract - - | xclip -selection clipboard'
+
+# Recording
+bindsym $mod+Mod1+1 exec sh -c '~/.scripts/record_audio_with_mic.sh stop -f'
+bindsym $mod+Mod1+2 exec sh -c '~/.scripts/record_audio_with_mic.sh start -f'
+bindsym $mod+Mod1+3 exec sh -c '~/.scripts/record_audio_without_mic.sh start -f'
+# TODO add record with maim to select a region from the screen
 
 set $ws1 "1:<b>1</b>"
 set $ws2 "2:<b>2</b>"
@@ -219,6 +234,8 @@ exec --no-startup-id dunst
 exec --no-startup-id xrdb ~/.Xresources
 exec --no-startup-id xscreensaver --no-splash
 exec --no-startup-id ~/.scripts/disable_dpms.sh
+exec --no-startup-id xrandr --output HDMI-2 --above DP-2
 
 exec_always --no-startup-id feh --bg-fill $HOME/.config/wallpaper.jpg
 exec_always --no-startup-id setxkbmap br
+exec_always --no-startup-id picom

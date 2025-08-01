@@ -113,6 +113,8 @@ Plug 'sbdchd/neoformat'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-context'
 Plug 'nvim-lua/plenary.nvim'
+Plug 'Tetralux/odin.vim'
+Plug 'tamton-aquib/staline.nvim'
 call plug#end()
 
 imap <c-x><c-k> <plug>(fzf-complete-word)
@@ -158,7 +160,7 @@ set foldmethod=manual
 
 lua << EOF
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = {"vim", "typescript", "javascript", "html", "tsx", "cpp", "c", "css", "html"},
+  ensure_installed = {"vim", "typescript", "javascript", "html", "tsx", "cpp", "c", "css", "html", "vue"},
   highlight = { enable = true },
   indent = { enable = true },
   auto_install = true,
@@ -190,26 +192,77 @@ vim.opt.termguicolors = true
 -- empty setup using defaults
 require("nvim-tree").setup()
 
+-- Status line
+require("staline").setup {
+  sections = {
+    left = {
+      'file_size', ' ',                        -- Filesize
+      { 'StalineFile', 'file_name' }, ' '       -- Filename in different highlight
+    },
+    mid = { ' ', vim.fn.fnamemodify(vim.fn.getcwd(), ":t") },                      -- "lsp_name" is still a little buggy
+    right = {
+      { 'StalineEnc', vim.bo.fileencoding:upper() }, '  ',  -- Example for custom section
+      { 'StalineEnc', 'cool_symbol' }, ' ',                 -- the cool_symbol for your OS
+      { 'StalineGit', 'branch' }, ' ', '▊'                  -- Branch Name in different highlight
+    }
+    },
+  defaults = {
+    bg = "#202328",
+    branch_symbol = " "
+  },
+  mode_colors = {
+    n = "#38b1f0",
+    i = "#9ece6a",       -- etc mode
+  }
+  }
+vim.cmd [[hi StalineEnc  guifg=#7d9955 guibg=#202328]]       -- Encoding Highlight
+vim.cmd [[hi StalineGit  guifg=#8583b3 guibg=#202328]]       -- Branch Name Highlight
+vim.cmd [[hi StalineFile guifg=#c37cda guibg=#202328]]       -- File name Highlight
+
+
 EOF
 
 lua << EOF
   require("mason").setup()
   require("mason-lspconfig").setup {
-      ensure_installed = { "lua_ls", "pyright", "cssls", "clangd" },
+      ensure_installed = { "lua_ls", "pyright", "cssls", "clangd", "vtsls" },
   }
-EOF
-
-lua << EOF
 -- Setup language servers.
-
 local lspconfig = require('lspconfig')
 lspconfig.pyright.setup {}
 lspconfig.cssls.setup {}
-lspconfig.tsserver.setup {
-  settings = { implicitProjectConfiguration = { checkJs = true } }
+--lspconfig.ts_ls.setup {
+--  --settings = { implicitProjectConfiguration = { checkJs = true } }
+--}
+local vue_language_server_path = vim.fn.stdpath('data') .. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
+local vue_plugin = {
+  name = '@vue/typescript-plugin',
+  location = vue_language_server_path,
+  languages = { 'vue' },
+  configNamespace = 'typescript',
+}
+vim.lsp.config('vtsls', {
+  settings = {
+    vtsls = {
+      tsserver = {
+        globalPlugins = {
+          vue_plugin,
+        },
+      },
+    },
+  },
+  filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+})
+lspconfig.vue_ls.setup {
+  init_options = {
+    vue = {
+      hybridMode = true,
+    },
+  },
 }
 lspconfig.jdtls.setup {}
 lspconfig.sqlls.setup {}
+lspconfig.zls.setup {}
 
 
 -- lspconfig.ccls.setup {
@@ -222,12 +275,13 @@ lspconfig.sqlls.setup {}
 
 
 lspconfig.clangd.setup {
-  -- cmd = { 'docker', 'run', '-i', '--rm', '-v',  vim.fn.getcwd() .. ':' .. vim.fn.getcwd(), '-w', vim.fn.getcwd(), 'clang', 'clangd', '--query-driver=/usr/bin/g++' },
+  -- cmd = { 'docker', 'run', '-i', '--rm', '-v',  vim.fn.getcwd() .. ':' .. vim.fn.getcwd(), '-w', vim.fn.getcwd(), 'clang', 'clangd' },
   cmd = {"clangd", "--log=verbose", "--clang-tidy", "--all-scopes-completion", "--enable-config" },
-  root_dir = lspconfig.util.find_git_ancestor()
+  --root_dir = lspconfig.util.find_git_ancestor() or vim.fn.getcwd()
+  root_dir = vim.fn.getcwd()
 }
 lspconfig.lua_ls.setup {}
-lspconfig.eslint.setup {}
+-- lspconfig.eslint.setup {}
 lspconfig.html.setup {}
 lspconfig.solargraph.setup {}
 lspconfig.ruby_lsp.setup {}
@@ -281,6 +335,13 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 vim.o.updatetime = 250
 vim.cmd [[autocmd! CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+
+-- Copilot
+vim.g.copilot_workspace_folders =
+  {
+    "/home/yuri/Projects/Flatfile"
+  }
+
 EOF
 
 lua require'colorizer'.setup()
